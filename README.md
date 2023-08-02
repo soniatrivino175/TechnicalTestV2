@@ -2,6 +2,8 @@
 
 TechnicalTestV2 (Creación de examen para estudiantes)
 
+• NOTA: Documentación, colección postman, scripts de bases de datos en la ruta (/src/main/resources/)
+
 El proyecto usa el motor de base de datos de Mysql.
 Los pasos para poner en ejecución el proyecto son los siguientes:
 a)	INSTALACION DE LA BASE DE DATOS:
