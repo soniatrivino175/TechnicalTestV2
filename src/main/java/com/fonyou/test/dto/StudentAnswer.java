@@ -13,6 +13,5 @@ import lombok.ToString;
 public class StudentAnswer {
 
 	@Valid
-	@Size( min = 4, max = 4, message = "Should have 4 answers")
 	private List<Answer> answers;
 }
