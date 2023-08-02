@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "885e44f2-3238-45a9-bd00-6d917bdbcab6",
+		"name": "TechnicalTestV2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18839514",
+		"_collection_link": "https://restless-meadow-634381.postman.co/workspace/Ayesa~7e4e4905-95de-473b-b33c-a723860945e3/collection/18839514-885e44f2-3238-45a9-bd00-6d917bdbcab6?action=share&creator=18839514&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Create student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"code\": \"1069716479\",\r\n\t\"name\": \"Sonia Trivino\",\r\n\t\"age\": 18,\r\n\t\"city\": \"New York\",\r\n\t\"timeZone\" : \"America/New_York\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create exam",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"examCode\": \"ZJKLM\",\r\n\t\"examName\": \"Test matematico (+,-,*,/)\",\r\n    \"questions\": [{\r\n        \"question\": \"Cuanto es 5 + 3?\",\r\n        \"score\": 20,\r\n        \"answersOptions\": [{\r\n            \"answer\": \"17\",\r\n            \"correct\": false\r\n        },\r\n        {\r\n            \"answer\": \"38\"\r\n        },\r\n        {\r\n            \"answer\": \"8.5\"\r\n        },\r\n        {\r\n            \"answer\": \"8\",\r\n            \"correct\": true\r\n        }]\r\n    },\r\n    {\r\n        \"question\": \"Cuanto es 0/3 ?\",\r\n        \"score\": 20,\r\n        \"answersOptions\": [{\r\n            \"answer\": \"3\",\r\n            \"correct\": false\r\n        },\r\n        {\r\n            \"answer\": \"1\"\r\n        },\r\n        {\r\n            \"answer\": \"0\",\r\n            \"correct\": true\r\n        },\r\n        {\r\n            \"answer\": \"No se puede hacer la division\"\r\n        }]\r\n    },\r\n    {\r\n        \"question\": \"Cuanto es 3 / 0 ?\",\r\n        \"score\": 20,\r\n        \"answersOptions\": [{\r\n            \"answer\": \"NAN (Error aritmetico)\",\r\n            \"correct\": true\r\n        },\r\n        {\r\n            \"answer\": \"1\",\r\n            \"correct\": false\r\n        },\r\n        {\r\n            \"answer\": \"0\",\r\n            \"correct\": false\r\n        },\r\n        {\r\n            \"answer\": \"3\",\r\n            \"correct\": false\r\n        }]\r\n    }]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/exams",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exams"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schedule exam",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"studentCodes\": [\"1069716479\"],\r\n    \"examDate\": \"2023-09-01 14:15:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/exams/schedule/:examCode",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exams",
+						"schedule",
+						":examCode"
+					],
+					"variable": [
+						{
+							"key": "examCode",
+							"value": "ZJKLM"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Answer exam",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"answers\": [{\r\n        \"numberQuestion\": 1,\r\n        \"enumerationAnswer\": \"D\"\r\n    },\r\n    {\r\n        \"numberQuestion\": 2,\r\n        \"enumerationAnswer\": \"B\"\r\n    },\r\n    {\r\n        \"numberQuestion\": 3,\r\n        \"enumerationAnswer\": \"C\"\r\n    }]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/exams/answer/:examCode/:studentCode",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"exams",
+						"answer",
+						":examCode",
+						":studentCode"
+					],
+					"variable": [
+						{
+							"key": "examCode",
+							"value": "ZJKLM"
+						},
+						{
+							"key": "studentCode",
+							"value": "1069716479"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
