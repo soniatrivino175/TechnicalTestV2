@@ -132,7 +132,7 @@ public class ExamServiceImpl implements ExamService {
 	
 	private void saveAnswersOptions( Long questionId, AnswerOption answerOption ) {
 		answerOptionRepository.save(
-			new AnswerOptionEntity(questionId, answerOption.getEnumeration(), answerOption.getAnswer(), answerOption.isCorrect())
+			new AnswerOptionEntity(questionId, answerOption.getEnumeration(), answerOption.getAnswer(), answerOption.getCorrect())
 		);
 	}
 	
