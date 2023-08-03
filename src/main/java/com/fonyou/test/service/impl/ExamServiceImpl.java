@@ -3,6 +3,7 @@ package com.fonyou.test.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.dozer.Mapper;
@@ -90,8 +91,7 @@ public class ExamServiceImpl implements ExamService {
 		
 		ExamScheduleResponse scheduleResponse = new ExamScheduleResponse();		
 		for( String studentCode : examSchedule.getStudentCodes() ) {
-			try {
-				
+			try {	
 				StudentScheduleEntity studentSchedule = saveStudentSchedule( examCode, studentCode, examSchedule.getExamDate() );
 				if( studentSchedule != null ) {			
 					String examDateStr = new SimpleDateFormat(DATE_FORMAT).format(studentSchedule.getExamDate());
@@ -125,7 +125,6 @@ public class ExamServiceImpl implements ExamService {
 		return studentAnswerRepository.findByExamCodeAndStudentCode(examCode, studentCode);
 	}
 	
-
 	private Long saveQuestion( String examCode, Question question ) {		
 		return questionRepository.save( new QuestionEntity(examCode, question.getNumberQuestion(), question.getQuestion(), question.getScore()) ).getId();
 	}
@@ -160,5 +159,45 @@ public class ExamServiceImpl implements ExamService {
 		} catch (ParseException e) {
 			return null;
 		}
+	}
+	
+	@Override
+	public boolean existsExam( String examCode ) {
+		return examRepository.findByCode(examCode) != null;
+	}
+	
+	@Override
+	public int sumScoreQuestion( List<Question> questions ) {
+		return questions.stream().mapToInt(Question::getScore).sum();
+	}
+	
+	@Override
+	public boolean hasAnswerOptionCorrectUnique( List<Question> questions ) {
+		for( Question qe: questions ) {
+			if( qe.getAnswersOptions().stream().filter(q -> q.getCorrect()).count() != 1 ) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private Long countQuestionsByExamCode( String examCode ) {
+		return questionRepository.countByExamCode(examCode);
+	}
+	
+	@Override
+	public boolean hasNumberQuestionsOK( String examCode, StudentAnswer studentAnswer ) {
+		for(Answer ans : studentAnswer.getAnswers()) {
+			if( !(ans.getNumberQuestion() <= countQuestionsByExamCode(examCode).intValue()) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean numberQuestionsDuplicated( StudentAnswer studentAnswer ) {
+		return studentAnswer.getAnswers().stream()
+				.map(a -> a.getNumberQuestion()).distinct().count() != studentAnswer.getAnswers().size();
 	}
 }

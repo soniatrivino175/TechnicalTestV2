@@ -6,4 +6,5 @@ import com.fonyou.test.entity.ExamEntity;
 
 public interface ExamRepository extends JpaRepository<ExamEntity, String> {
 
+	ExamEntity findByCode( String code );
 }

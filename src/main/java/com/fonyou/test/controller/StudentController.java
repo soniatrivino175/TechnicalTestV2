@@ -1,5 +1,8 @@
 package com.fonyou.test.controller;
 
+import java.util.Set;
+import java.util.TimeZone;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +35,28 @@ public class StudentController extends ErrorHandlingController {
 	@PostMapping
 	public ResponseEntity<Response> createStudent(@RequestBody @Valid Student student) {
 		try {
-			studentService.create(student);
-			return ResponseEntity
-					.ok()
-					.body( 	new Response(HttpStatus.OK.value(), 
-								HttpStatus.OK.getReasonPhrase(), 
-								"Student created") );
+			if( studentService.existsStudent(student.getCode()) ) {
+
+				return new ResponseEntity<>( 
+					new Response(HttpStatus.CONFLICT.value(), 
+						HttpStatus.CONFLICT.getReasonPhrase(), 
+						"Student already exists"), HttpStatus.CONFLICT);
+				
+			}else if( !studentService.isValidTimeZone(student.getTimeZone()) ) {
+				
+				return new ResponseEntity<>( 
+						new Response(HttpStatus.BAD_REQUEST.value(), 
+							HttpStatus.BAD_REQUEST.getReasonPhrase(), 
+							"Invalid TimeZone"), HttpStatus.BAD_REQUEST);
+			}
+			else {
+				studentService.create(student);
+				return ResponseEntity
+						.ok()
+						.body( 	new Response(HttpStatus.OK.value(), 
+									HttpStatus.OK.getReasonPhrase(), 
+									"Student created") );
+			}
 		}catch(Exception e) {
 			return ResponseEntity
 					.internalServerError()
@@ -47,4 +66,6 @@ public class StudentController extends ErrorHandlingController {
 								e.getMessage()) );
 		}
 	}
+	
+	
 }
